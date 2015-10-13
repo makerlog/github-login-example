@@ -1,0 +1,28 @@
+{
+  "name": "github-login-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "browserify index.js -t [ envify --NODE_ENV production ] -o  assets/bundle.js",
+    "start": "budo index.js:bundle.js --live -- -t [ envify --NODE_ENV development ]"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trailguide/github-login-example.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/trailguide/github-login-example/issues"
+  },
+  "homepage": "https://github.com/trailguide/github-login-example#readme",
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "budo": "^5.1.4",
+    "envify": "^3.4.0"
+  },
+  "dependencies": {
+    "xhr": "^2.1.0"
+  }
+}
