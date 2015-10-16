@@ -1,20 +1,23 @@
-var xhr = require('xhr')
-var qs = require('querystring')
+var githubStaticAuth = require('github-static-auth')
 var cookie = require('cookie-cutter')
 var config = require('./config')
+
+var auth = githubStaticAuth({
+  githubSecretKeeper: config.ghAuthHost,
+  githubClientId: config.client_id
+})
 
 start()
 
 function start () {
-  var code = getCode()
   var token = cookie.get('github-auth-example')
 
   if (token) {
-    getProfile(token, function (err, profile) {
+    auth.getProfile(token, function (err, profile) {
       renderProfile(profile)
     })
-  } else if (code) {
-    getToken(code, function (err, token) {
+  } else if (auth.getCode()) {
+    auth.login(function (err, token) {
       cookie.set('github-auth-example', token)
       window.location = window.location.origin
     })
@@ -38,38 +41,6 @@ function renderProfile (profile) {
     cookie.set('github-auth-example', '')
     window.location = window.location
   })
-}
-
-function getProfile (token, callback) {
-  var options = {
-    url: 'https://api.github.com/user',
-    json: true,
-    headers: {
-      authorization: 'token ' + token
-    }
-  }
-
-  xhr(options, function (err, res, body) {
-    if (err) return callback(err)
-    callback(null, body)
-  })
-}
-
-function getToken (code, callback) {
-  var options = {
-    url: config.ghAuthHost + '/' + config.client_id + '/' + code,
-    json: true
-  }
-
-  xhr(options, function (err, res, body) {
-    if (err) return callback(err)
-    callback(null, body.access_token)
-  })
-}
-
-function getCode () {
-  var query = window.location.href.split('?')[1]
-  return qs.parse(query).code
 }
 
 function renderLink () {
