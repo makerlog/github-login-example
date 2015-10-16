@@ -17,7 +17,7 @@ function start () {
       renderProfile(profile)
     })
   } else if (auth.getCode()) {
-    auth.login(function (err, token) {
+    auth.login(function (err, profile, token) {
       cookie.set('github-auth-example', token)
       window.location = window.location.origin
     })
