@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "cookie-cutter": "^0.1.1",
+    "github-static-auth": "^1.0.0",
     "xhr": "^2.1.0"
   }
 }
